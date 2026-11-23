@@ -1,0 +1,51 @@
+info:
+  name: Create Organization with Owner
+  type: http
+  seq: 1
+  tags:
+    - workspace
+    - organization
+http:
+  method: POST
+  url: "{{base_url}}/api/v1/organizations"
+  headers:
+    - name: Accept
+      value: application/vnd.api+json
+    - name: Content-Type
+      value: application/vnd.api+json
+  body:
+    type: json
+    data: |-
+      {
+        "data": {
+          "attributes": {
+            "member": {
+              "email": "{{owner_email}}",
+              "role": "owner",
+              "username": "{{owner_username}}"
+            },
+            "name": "Acme Engineering",
+            "plan_type": "enterprise"
+          },
+          "type": "organization"
+        }
+      }
+runtime:
+  actions:
+    - type: set-variable
+      phase: after-response
+      selector:
+        expression: res.body.data.id
+        method: jsonq
+      variable:
+        name: organization_id
+        scope: runtime
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "201"
+    - expression: res.body.data.id
+      operator: isDefined
+    - expression: res.body.data.attributes.name
+      operator: eq
+      value: Acme Engineering

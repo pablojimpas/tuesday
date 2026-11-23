@@ -1,0 +1,55 @@
+info:
+  name: Create Task
+  type: http
+  seq: 7
+  tags:
+    - projects
+    - task
+http:
+  method: POST
+  url: "{{base_url}}/api/v1/tasks"
+  headers:
+    - name: Accept
+      value: application/vnd.api+json
+    - name: Content-Type
+      value: application/vnd.api+json
+    - name: x-organization
+      value: "{{organization_id}}"
+  body:
+    type: json
+    data: |-
+      {
+        "data": {
+          "attributes": {
+            "description": "Automate collection generation and CI drift detection",
+            "due_date": "2026-11-15",
+            "priority": 4,
+            "project_id": "{{project_id}}",
+            "start_date": "2026-11-01",
+            "title": "Design OpenCollection Generator"
+          },
+          "type": "task"
+        }
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+runtime:
+  actions:
+    - type: set-variable
+      phase: after-response
+      selector:
+        expression: res.body.data.id
+        method: jsonq
+      variable:
+        name: task_id
+        scope: runtime
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "201"
+    - expression: res.body.data.id
+      operator: isDefined
+    - expression: res.body.data.attributes.title
+      operator: eq
+      value: Design OpenCollection Generator

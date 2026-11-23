@@ -1,0 +1,40 @@
+info:
+  name: Update Comment
+  type: http
+  seq: 12
+  tags:
+    - projects
+    - comment
+http:
+  method: PATCH
+  url: "{{base_url}}/api/v1/comments/{{comment_id}}"
+  headers:
+    - name: Accept
+      value: application/vnd.api+json
+    - name: Content-Type
+      value: application/vnd.api+json
+    - name: x-organization
+      value: "{{organization_id}}"
+  body:
+    type: json
+    data: |-
+      {
+        "data": {
+          "attributes": {
+            "body": "Schema and declarative checks passed."
+          },
+          "id": "{{comment_id}}",
+          "type": "comment"
+        }
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.data.id
+      operator: eq
+      value: "{{comment_id}}"

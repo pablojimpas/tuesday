@@ -1,0 +1,10 @@
+name: local
+variables:
+  - name: base_url
+    value: "http://127.0.0.1:4000"
+  - name: owner_email
+    value: "owner@tuesday.dev"
+  - name: owner_username
+    value: tuesday_owner
+  - name: token
+    secret: true

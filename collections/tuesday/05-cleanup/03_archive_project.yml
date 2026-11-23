@@ -1,0 +1,40 @@
+info:
+  name: Archive Project
+  type: http
+  seq: 15
+  tags:
+    - projects
+    - project
+http:
+  method: PATCH
+  url: "{{base_url}}/api/v1/projects/{{project_id}}/archive"
+  headers:
+    - name: Accept
+      value: application/vnd.api+json
+    - name: Content-Type
+      value: application/vnd.api+json
+    - name: x-organization
+      value: "{{organization_id}}"
+  body:
+    type: json
+    data: |-
+      {
+        "data": {
+          "attributes": {
+            "status": "archived"
+          },
+          "id": "{{project_id}}",
+          "type": "project"
+        }
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.data.id
+      operator: eq
+      value: "{{project_id}}"

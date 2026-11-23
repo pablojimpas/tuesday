@@ -1,0 +1,54 @@
+info:
+  name: Create Project
+  type: http
+  seq: 4
+  tags:
+    - projects
+    - project
+http:
+  method: POST
+  url: "{{base_url}}/api/v1/projects"
+  headers:
+    - name: Accept
+      value: application/vnd.api+json
+    - name: Content-Type
+      value: application/vnd.api+json
+    - name: x-organization
+      value: "{{organization_id}}"
+  body:
+    type: json
+    data: |-
+      {
+        "data": {
+          "attributes": {
+            "description": "Core initiatives for Q4",
+            "end_date": "2026-12-31",
+            "name": "Q4 Platform Launch",
+            "organization_id": "{{organization_id}}",
+            "start_date": "2026-11-01"
+          },
+          "type": "project"
+        }
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+runtime:
+  actions:
+    - type: set-variable
+      phase: after-response
+      selector:
+        expression: res.body.data.id
+        method: jsonq
+      variable:
+        name: project_id
+        scope: runtime
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "201"
+    - expression: res.body.data.id
+      operator: isDefined
+    - expression: res.body.data.attributes.name
+      operator: eq
+      value: Q4 Platform Launch

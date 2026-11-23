@@ -1,0 +1,25 @@
+info:
+  name: List Projects
+  type: http
+  seq: 5
+  tags:
+    - projects
+    - project
+http:
+  method: GET
+  url: "{{base_url}}/api/v1/projects"
+  headers:
+    - name: Accept
+      value: application/vnd.api+json
+    - name: x-organization
+      value: "{{organization_id}}"
+  auth:
+    type: bearer
+    token: "{{token}}"
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.data
+      operator: isArray

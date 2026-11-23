@@ -1,0 +1,39 @@
+info:
+  name: Complete Task
+  type: http
+  seq: 9
+  tags:
+    - projects
+    - task
+http:
+  method: PATCH
+  url: "{{base_url}}/api/v1/tasks/{{task_id}}/complete"
+  headers:
+    - name: Accept
+      value: application/vnd.api+json
+    - name: Content-Type
+      value: application/vnd.api+json
+    - name: x-organization
+      value: "{{organization_id}}"
+  body:
+    type: json
+    data: |-
+      {
+        "data": {
+          "attributes": {
+            "is_complete": true
+          },
+          "id": "{{task_id}}",
+          "type": "task"
+        }
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.data.attributes.is_complete
+      operator: isTrue

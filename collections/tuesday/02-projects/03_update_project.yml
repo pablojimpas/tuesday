@@ -1,0 +1,44 @@
+info:
+  name: Update Project
+  type: http
+  seq: 6
+  tags:
+    - projects
+    - project
+http:
+  method: PATCH
+  url: "{{base_url}}/api/v1/projects/{{project_id}}"
+  headers:
+    - name: Accept
+      value: application/vnd.api+json
+    - name: Content-Type
+      value: application/vnd.api+json
+    - name: x-organization
+      value: "{{organization_id}}"
+  body:
+    type: json
+    data: |-
+      {
+        "data": {
+          "attributes": {
+            "description": "Updated Q4 platform roadmap",
+            "end_date": "2026-12-31",
+            "name": "Q4 Platform Launch",
+            "start_date": "2026-11-01",
+            "status": "active"
+          },
+          "id": "{{project_id}}",
+          "type": "project"
+        }
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.data.id
+      operator: eq
+      value: "{{project_id}}"

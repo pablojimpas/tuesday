@@ -1,0 +1,23 @@
+info:
+  name: Delete Comment
+  type: http
+  seq: 13
+  tags:
+    - projects
+    - comment
+http:
+  method: DELETE
+  url: "{{base_url}}/api/v1/comments/{{comment_id}}"
+  headers:
+    - name: Accept
+      value: application/vnd.api+json
+    - name: x-organization
+      value: "{{organization_id}}"
+  auth:
+    type: bearer
+    token: "{{token}}"
+runtime:
+  assertions:
+    - expression: res.status
+      operator: in
+      value: "200,204"

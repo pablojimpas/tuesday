@@ -1,3 +1,6 @@
+> [!NOTE]
+> **OpenCollection Showcase Fork** — This `opencollection-showcase` branch is a fork of [devcarrots/tuesday](https://github.com/devcarrots/tuesday) demonstrating [ash_opencollection](https://github.com/pablojimpas/ash_opencollection) and [open_collection](https://github.com/pablojimpas/open_collection) on a multitenant Ash application (see `collections/tuesday/` and [`documentation/tutorials/tuesday-walkthrough.md`](documentation/tutorials/tuesday-walkthrough.md)).
+
 # Tuesday
 It is a project management application built to help explain concepts in the book _Domain Modeling with Ash Framework_. You can read more about the book and it [here](https://devcarrots.com/).
 

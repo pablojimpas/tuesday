@@ -1,0 +1,48 @@
+info:
+  name: Create Comment
+  type: http
+  seq: 10
+  tags:
+    - projects
+    - comment
+http:
+  method: POST
+  url: "{{base_url}}/api/v1/tasks/{{task_id}}/comments"
+  headers:
+    - name: Accept
+      value: application/vnd.api+json
+    - name: Content-Type
+      value: application/vnd.api+json
+    - name: x-organization
+      value: "{{organization_id}}"
+  body:
+    type: json
+    data: |-
+      {
+        "data": {
+          "attributes": {
+            "body": "Collection verified against OpenCollection v1.0.0 schema.",
+            "task_id": "{{task_id}}"
+          },
+          "type": "comment"
+        }
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+runtime:
+  actions:
+    - type: set-variable
+      phase: after-response
+      selector:
+        expression: res.body.data.id
+        method: jsonq
+      variable:
+        name: comment_id
+        scope: runtime
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "201"
+    - expression: res.body.data.id
+      operator: isDefined

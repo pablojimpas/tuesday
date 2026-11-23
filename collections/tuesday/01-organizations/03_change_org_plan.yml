@@ -1,0 +1,38 @@
+info:
+  name: Change Organization Plan
+  type: http
+  seq: 3
+  tags:
+    - workspace
+    - organization
+http:
+  method: PATCH
+  url: "{{base_url}}/api/v1/organizations/{{organization_id}}/plan"
+  headers:
+    - name: Accept
+      value: application/vnd.api+json
+    - name: Content-Type
+      value: application/vnd.api+json
+  body:
+    type: json
+    data: |-
+      {
+        "data": {
+          "attributes": {
+            "plan_type": "premium"
+          },
+          "id": "{{organization_id}}",
+          "type": "organization"
+        }
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.data.attributes.plan_type
+      operator: eq
+      value: premium

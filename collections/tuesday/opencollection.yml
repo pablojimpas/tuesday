@@ -1,0 +1,5 @@
+opencollection: 1.0.0
+info:
+  name: Tuesday API Showcase
+  summary: "Declarative OpenCollection workflow for Tuesday: Organization -> Project -> Task -> Comment"
+  version: 1.0.0
